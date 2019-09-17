@@ -1,0 +1,49 @@
+version: "2"
+
+services:
+  php:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./.docker/images/php/Dockerfile
+      args:
+        HOST_UID: 1000
+        HOST_GID: 1000
+    network_mode: host
+    volumes:
+      - ./web:/var/www/html
+      - .docker/images/php/ports.conf:/etc/apache2/ports.conf
+      - .docker/logs/php:/var/log/apache2
+    expose:
+      - "8091"
+  # mysql:
+  #     restart: always
+  #     image: mysql:5.7
+  #     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  #     volumes:
+  #         - .docker/mysql:/var/lib/mysql
+  #         - .docker/logs/mysql:/var/log/mysql
+  #     expose:
+  #         - "3306"
+  #     ports:
+  #         - "33069:3306"
+  #     environment:
+  #         MYSQL_ROOT_PASSWORD: root
+  # mail-server:
+  #   restart: always
+  #   image: mailhog/mailhog
+  #   expose:
+  #     - "1025" # SMTP Server to send mail
+  #     - "8025" # HTTP Server to check mail
+  #   ports:
+  #     - "8031:8025"
+  # adminer:
+  #     restart: always
+  #     image: adminer
+  #     expose:
+  #         - "8080"
+  #     ports:
+  #         - "8039:8080"
+  #     environment:
+  #         ADMINER_DEFAULT_SERVER: mysql
+  #         ADMINER_DESIGN: "pappu687"
